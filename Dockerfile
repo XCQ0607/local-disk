@@ -32,7 +32,7 @@ RUN yarn install --production
 # 从构建阶段复制编译结果
 COPY --from=builder /app/js ./js
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/filelist.db ./filelist.db  # 复制数据库文件（如果初始有数据）
+# COPY --from=builder /app/filelist.db ./filelist.db  # 复制数据库文件（如果初始有数据）
 
 # 暴露应用端口
 EXPOSE 3000

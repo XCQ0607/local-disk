@@ -41,4 +41,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add yarn.lock
           git commit -m "chore: update yarn.lock [skip ci]" # 跳过CI避免循环触发
-          git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:main
+          git push "https://${{ secrets.GITHUB1_TOKEN }}@github.com/${{ github.repository }}" HEAD:main

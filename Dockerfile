@@ -1,39 +1,41 @@
-# 第一阶段：构建阶段
+# 构建阶段
 FROM node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制package.json和package-lock.json
-COPY package*.json ./
+# 复制依赖文件
+COPY package.json yarn.lock ./
 
 # 安装所有依赖（包括开发依赖）
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 # 复制项目源代码
 COPY . .
 
-# 编译TypeScript代码
-RUN npm run build
+# 执行构建命令（编译TypeScript和前端资源）
+RUN yarn run build
 
-# 第二阶段：生产阶段
+
+# 运行阶段
 FROM node:18-alpine
 
 # 设置工作目录
 WORKDIR /app
 
-# 复制package.json和package-lock.json
-COPY package*.json ./
+# 复制依赖文件
+COPY package.json yarn.lock ./
 
-# 只安装生产依赖
-RUN npm ci --only=production
+# 仅安装生产依赖
+RUN yarn install --production
 
-# 从构建阶段复制编译后的文件
+# 从构建阶段复制编译结果
 COPY --from=builder /app/js ./js
 COPY --from=builder /app/public ./public
+# COPY --from=builder /app/filelist.db ./filelist.db  # 复制数据库文件（如果初始有数据）
 
-# 暴露项目运行的3000端口
+# 暴露应用端口
 EXPOSE 3000
 
-# 启动应用
-CMD ["node", "js/src/app.js"]
+# 启动命令
+CMD ["npm", "js/src/app.js"]

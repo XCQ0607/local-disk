@@ -14,16 +14,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          persist-credentials: false # 后续使用个人令牌授权推送
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18' # 与Dockerfile保持一致的Node版本
           cache: 'yarn'
 
       - name: Install dependencies and update yarn.lock
-        run: yarn install --frozen-lockfile false # 允许更新锁文件
+        run: yarn install # 去掉错误参数，自动更新锁文件
 
       - name: Check for changes in yarn.lock
         id: check_changes
@@ -40,5 +40,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add yarn.lock
-          git commit -m "chore: update yarn.lock [skip ci]" # 跳过CI避免循环触发
+          git commit -m "chore: update yarn.lock [skip ci]"
           git push "https://${{ secrets.GITHUB1_TOKEN }}@github.com/${{ github.repository }}" HEAD:main

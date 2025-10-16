@@ -38,4 +38,4 @@ COPY --from=builder /app/public ./public
 EXPOSE 3000
 
 # 启动命令
-CMD ["npm", "js/src/app.js"]
+CMD ["node", "js/src/app.js"]

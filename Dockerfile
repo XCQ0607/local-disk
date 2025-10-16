@@ -27,7 +27,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # 仅安装生产依赖
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --production
 
 # 从构建阶段复制编译结果
 COPY --from=builder /app/js ./js
